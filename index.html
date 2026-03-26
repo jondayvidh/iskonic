@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TANGLAW: Ang Himno ng Sintang Paaralan</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="content-wrapper">
+    <div class="main-container">
+        
+        <div class="left-column">
+            
+            <div class="media-hub">
+                <img src="cover.jpg" alt="PUP Logo" class="cover-art">
+                <div class="song-info">
+                    <h2>Imno ng PUP</h2>
+                    <p>S. Calabig, S. Roldan, and R. Amaranto</p>
+                </div>
+            </div>
+
+            <div class="controls-container">
+                
+                <div class="progress-area">
+                    <input type="range" id="progressBar" value="0" max="100">
+                    <div class="time-display">
+                        <span id="currentTime">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
+                </div>
+
+                <div class="transport-row">
+                    <button id="shuffleBtn" class="ctrl-btn tooltip" data-tip="Shuffle" title="Shuffle">
+                        <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17zm4.76-.82l3.15 3.15-3.15 3.15V13h-.34C13.3 13 11.58 12.5 10 11.35l-1.06 1.06A8.23 8.23 0 0 0 14.99 14h.42v2.41L19 12.83 15.41 9.25v-.9h-.06zm-4.76 7.25A8.16 8.16 0 0 1 5 17H4v-2h1c1.52 0 2.9-.53 4-1.38l1.41 1.41c-.56.44-1.19.81-1.82 1.1zM15.41 4 19 7.59l-3.59 3.59V9h-.42A8.16 8.16 0 0 0 10 11.35L8.94 10.3A9.9 9.9 0 0 1 15 8h.41V4z"/></svg>
+                    </button>
+
+                    <button id="prevBtn" class="ctrl-btn tooltip" data-tip="Previous" title="Previous">
+                        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6V6zm3.5 6 8.5 6V6L9.5 12z"/></svg>
+                    </button>
+
+                    <button id="playBtn" class="play-btn">
+                        <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+
+                    <button id="nextBtn" class="ctrl-btn tooltip" data-tip="Next" title="Next">
+                        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm10-12v12h2V6h-2z"/></svg>
+                    </button>
+
+                    <button id="repeatBtn" class="ctrl-btn tooltip" data-tip="Repeat" title="Repeat">
+                        <svg id="repeatIcon" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+                    </button>
+                </div>
+
+                <div class="volume-row">
+                    <button id="muteBtn" class="ctrl-btn mute-btn" title="Mute">
+                        <svg id="muteIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                    </button>
+                    <div class="volume-track">
+                        <input type="range" id="volumeSlider" value="1" min="0" max="1" step="0.05">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lyrics-container" id="lyricsContainer"></div>
+    </div>
+</div>
+
+<audio id="audio" src="pup-hymn.mp3"></audio>
+<script src="script.js"></script>
+</body>
+</html>
