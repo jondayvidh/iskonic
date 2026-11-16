@@ -1,7 +1,3 @@
-/*
- * System Architecture: Document Object Model Bindings
- * Description: Establishes static references to interface nodes to circumvent redundant layout thrashing during runtime execution.
- */
 const audio           = document.getElementById('audio');
 const playBtn         = document.getElementById('playBtn');
 const playIcon        = document.getElementById('playIcon');
@@ -18,17 +14,14 @@ const nextBtn         = document.getElementById('nextBtn');
 const repeatBtn       = document.getElementById('repeatBtn');
 const repeatIcon      = document.getElementById('repeatIcon');
 
-/*
- * System Architecture: Immutable Configurations and Constants
- * Description: Defines fixed vector graphic payloads and core data structures for application playback.
- */
-const iconPlay       = "M8 5v14l11-7z";
-const iconPause      = "M6 19h4V5H6v14zm8-14v14h4V5h-4z";
-const iconMute       = "M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.37.28-.78.52-1.25.71v2.06c1.12-.26 2.16-.76 3.06-1.43l1.67 1.67L21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z";
-const iconVol        = "M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z";
-const iconRepeatNone = "M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z";
-const iconRepeatAll  = "M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z";
-const iconRepeatOne  = "M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-7h-1v3h-1v1h2V10z";
+const iconPlay      = "M8 5v14l11-7z";
+const iconPause     = "M6 19h4V5H6v14zm8-14v14h4V5h-4z";
+const iconMute      = "M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.37.28-.78.52-1.25.71v2.06c1.12-.26 2.16-.76 3.06-1.43l1.67 1.67L21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z";
+const iconVol       = "M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z";
+const iconRepeatAll = "M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z";
+const iconRepeatOne = "M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-7h-1v3h-1v1h2V10z";
+
+const repeatLabels = ['Repeat: Off', 'Repeat: All', 'Repeat: One'];
 
 const playlist = [
     { src: 'pup-hymn.mp3', title: 'Imno ng PUP', artist: 'S. Calabig, S. Roldan, and R. Amaranto' }
@@ -57,24 +50,25 @@ const lyricsData = [
     { time: 95,    text: "PUP, pinagpala" }
 ];
 
-/*
- * System Architecture: Global State Mutators
- * Description: Variables tracking transient application conditions throughout the execution lifecycle.
- */
+const lyricLines = [];
+
 let repeatMode      = 0;
 let shuffleOn       = false;
 let lastActiveIndex = -1;
 let currentTrack    = 0;
 
-/*
- * Subroutine: Utility Functions
- * Description: Pure and imperative methods designated for chronological parsing and interface rendering updates.
- */
 function formatTime(seconds) {
     if (isNaN(seconds)) return '0:00';
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
     return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+}
+
+function updateSliderFill(slider) {
+    const min   = parseFloat(slider.min) || 0;
+    const max   = parseFloat(slider.max) || 100;
+    const ratio = (parseFloat(slider.value) - min) / (max - min);
+    slider.style.setProperty('--fill', (Math.min(Math.max(ratio, 0), 1) * 100) + '%');
 }
 
 function updatePlayIcon() {
@@ -86,16 +80,9 @@ function updateMuteIcon() {
 }
 
 function updateRepeatUI() {
-    const path = repeatIcon.querySelector('path');
     repeatBtn.classList.toggle('active', repeatMode > 0);
-    repeatBtn.title = ['Repeat: Off', 'Repeat: All', 'Repeat: One'][repeatMode];
-    repeatBtn.setAttribute('data-tip', repeatBtn.title);
-
-    if (repeatMode === 2) {
-        path.setAttribute('d', iconRepeatOne);
-    } else {
-        path.setAttribute('d', iconRepeatAll);
-    }
+    repeatBtn.title = repeatLabels[repeatMode];
+    repeatIcon.querySelector('path').setAttribute('d', repeatMode === 2 ? iconRepeatOne : iconRepeatAll);
 }
 
 function updateShuffleUI() {
@@ -103,19 +90,23 @@ function updateShuffleUI() {
     shuffleBtn.title = shuffleOn ? 'Shuffle: On' : 'Shuffle: Off';
 }
 
-/*
- * Subroutine: Core Operational Logic
- * Description: Mediates memory allocation and context preparation for sequential audio traversal.
- */
+function randomTrackIndex() {
+    let next;
+    do { next = Math.floor(Math.random() * playlist.length); }
+    while (next === currentTrack);
+    return next;
+}
+
 function loadTrack(index, autoPlay = false) {
     currentTrack = ((index % playlist.length) + playlist.length) % playlist.length;
     audio.src = playlist[currentTrack].src;
     lastActiveIndex = -1;
-    document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
+    lyricLines.forEach(l => l.classList.remove('active'));
     progressBar.value = 0;
+    updateSliderFill(progressBar);
     currentTimeEl.innerText = '0:00';
     durationEl.innerText = '0:00';
-    
+
     if (autoPlay) {
         audio.play().then(updatePlayIcon);
     } else {
@@ -123,10 +114,6 @@ function loadTrack(index, autoPlay = false) {
     }
 }
 
-/*
- * Subroutine: Client Interactive Event Listeners
- * Description: Attaches mutation callbacks triggered by human interface interactions.
- */
 playBtn.onclick = () => {
     if (audio.paused) audio.play();
     else audio.pause();
@@ -143,10 +130,7 @@ prevBtn.onclick = () => {
 
 nextBtn.onclick = () => {
     if (shuffleOn && playlist.length > 1) {
-        let next;
-        do { next = Math.floor(Math.random() * playlist.length); }
-        while (next === currentTrack);
-        loadTrack(next, !audio.paused);
+        loadTrack(randomTrackIndex(), !audio.paused);
     } else {
         loadTrack(currentTrack + 1, !audio.paused);
     }
@@ -163,12 +147,15 @@ repeatBtn.onclick = () => {
 };
 
 progressBar.oninput = () => {
+    updateSliderFill(progressBar);
+    if (!isFinite(audio.duration)) return;
     audio.currentTime = (progressBar.value / 100) * audio.duration;
 };
 
 volumeSlider.oninput = () => {
     audio.volume = volumeSlider.value;
     if (audio.muted && audio.volume > 0) audio.muted = false;
+    updateSliderFill(volumeSlider);
     updateMuteIcon();
 };
 
@@ -177,19 +164,12 @@ muteBtn.onclick = () => {
     updateMuteIcon();
 };
 
-/*
- * Subroutine: Audio Processing Event Listeners
- * Description: Monitors asynchronous telemetry derived directly from the active hardware audio context.
- */
 audio.onended = () => {
     if (repeatMode === 2) {
         audio.currentTime = 0;
         audio.play();
     } else if (shuffleOn && playlist.length > 1) {
-        let next;
-        do { next = Math.floor(Math.random() * playlist.length); }
-        while (next === currentTrack);
-        loadTrack(next, true);
+        loadTrack(randomTrackIndex(), true);
     } else if (currentTrack < playlist.length - 1 || repeatMode === 1) {
         loadTrack(currentTrack + 1, true);
     } else {
@@ -200,17 +180,16 @@ audio.onended = () => {
 audio.ontimeupdate = () => {
     const progress = (audio.currentTime / audio.duration) * 100;
     progressBar.value = progress || 0;
+    updateSliderFill(progressBar);
     currentTimeEl.innerText = formatTime(audio.currentTime);
 
-    const lines = document.querySelectorAll('.lyric-line');
     let currentLineIndex = -1;
-    
     lyricsData.forEach((line, index) => {
         if (audio.currentTime >= line.time) currentLineIndex = index;
     });
 
     if (currentLineIndex !== lastActiveIndex && currentLineIndex !== -1) {
-        lines.forEach((line, index) => {
+        lyricLines.forEach((line, index) => {
             const isActive = index === currentLineIndex;
             line.classList.toggle('active', isActive);
             if (isActive) {
@@ -225,10 +204,6 @@ audio.onloadedmetadata = () => {
     durationEl.innerText = formatTime(audio.duration);
 };
 
-/*
- * Subroutine: Initialization Routine
- * Description: Dynamically populates the interface nodes and synchronizes starting visual states prior to execution.
- */
 lyricsData.forEach((line) => {
     const p = document.createElement('p');
     p.className = 'lyric-line';
@@ -239,7 +214,11 @@ lyricsData.forEach((line) => {
         updatePlayIcon();
     };
     lyricsContainer.appendChild(p);
+    lyricLines.push(p);
 });
 
+progressBar.step = 'any';
+updateSliderFill(progressBar);
+updateSliderFill(volumeSlider);
 updateRepeatUI();
 updateShuffleUI();
