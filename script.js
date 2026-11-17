@@ -23,9 +23,7 @@ const iconRepeatOne = "M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6
 
 const repeatLabels = ['Repeat: Off', 'Repeat: All', 'Repeat: One'];
 
-const playlist = [
-    { src: 'pup-hymn.mp3', title: 'Imno ng PUP', artist: 'S. Calabig, S. Roldan, and R. Amaranto' }
-];
+const playlist = ['pup-hymn.mp3'];
 
 const lyricsData = [
     { time: 2,     text: "(Instrumental na Panimula)" },
@@ -99,7 +97,7 @@ function randomTrackIndex() {
 
 function loadTrack(index, autoPlay = false) {
     currentTrack = ((index % playlist.length) + playlist.length) % playlist.length;
-    audio.src = playlist[currentTrack].src;
+    audio.src = playlist[currentTrack];
     lastActiveIndex = -1;
     lyricLines.forEach(l => l.classList.remove('active'));
     progressBar.value = 0;
