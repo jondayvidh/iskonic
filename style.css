@@ -6,6 +6,17 @@
     --text: #ffffff;
     --text-dim: rgba(255, 255, 255, 0.55);
     --ctrl-hover: rgba(255, 255, 255, 0.08);
+
+    /* Layout rhythm */
+    --pad-x: clamp(20px, 4vw, 64px);
+    --pad-y: clamp(20px, 4vh, 48px);
+    --col-gap: clamp(32px, 4.2vw, 60px);
+
+    /* Card column width: up to 400px, shrinks with viewport width and height so
+       the whole composition always fits. 332px = the part of the left column's
+       height that doesn't scale with width (info, controls, gaps, plus room for
+       the artist line wrapping). 2.5 * --pad-y = top + bottom padding of the wrapper. */
+    --left-col: clamp(280px, min(36vw, 100vh - 2.5 * var(--pad-y) - 332px), 400px);
 }
 
 *, *::before, *::after {
@@ -30,19 +41,20 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    /* Bottom padding is larger so the composition sits slightly above geometric
+       center, which reads as centered (the card's drop shadow adds weight below). */
+    padding: var(--pad-y) var(--pad-x) calc(var(--pad-y) * 1.5);
     overflow: hidden;
 }
 
 .main-container {
     display: grid;
-    grid-template-columns: 400px 1fr;
-    gap: 60px;
+    grid-template-columns: var(--left-col) minmax(0, 1fr);
+    gap: var(--col-gap);
     width: 100%;
     max-width: 1200px;
-    height: 100%;
-    max-height: 720px;
-    align-items: center;
+    /* Height is driven by the left column; the lyrics panel stretches to match it. */
+    align-items: stretch;
 }
 
 .left-column {
@@ -363,12 +375,23 @@ input[type="range"]:disabled {
 }
 
 .lyrics-container {
-    height: 100%;
+    /* Size containment keeps the (tall) lyrics from inflating the grid row, so the
+       panel stretches to exactly the height of the left column. It also lets the
+       spacers below use cqh units relative to this panel. */
+    container-type: size;
     overflow-y: auto;
-    padding: 40px 20px;
+    padding: 0 20px;
     mask-image: linear-gradient(transparent, black 15%, black 85%, transparent);
     -webkit-mask-image: linear-gradient(transparent, black 15%, black 85%, transparent);
     scroll-behavior: smooth;
+}
+
+/* Half-panel spacers so the first and last lines can also scroll to the vertical center. */
+.lyrics-container::before,
+.lyrics-container::after {
+    content: '';
+    display: block;
+    height: 50cqh;
 }
 
 .lyrics-container::-webkit-scrollbar {
@@ -409,15 +432,14 @@ input[type="range"]:disabled {
     }
 
     .main-container {
-        grid-template-columns: 1fr;
-        height: auto;
-        max-height: none;
+        grid-template-columns: minmax(0, 1fr);
+        max-width: 480px;
     }
 
     .lyrics-container {
         height: 600px;
         mask-image: none;
         -webkit-mask-image: none;
-        padding: 100px 20px;
+        padding: 0 20px;
     }
 }
