@@ -269,12 +269,12 @@ input[type="range"]:focus-visible::-moz-range-thumb {
 .transport-row .ctrl-btn {
     width: 56px;
     height: 56px;
-    opacity: 1;
+    opacity: 0.85;
 }
 
 .transport-row .ctrl-btn svg {
-    width: 46px;
-    height: 46px;
+    width: 40px;
+    height: 40px;
 }
 
 /* Slightly rounded corners on the transport glyphs, as in Apple Music. */
@@ -293,8 +293,8 @@ input[type="range"]:focus-visible::-moz-range-thumb {
 .play-btn {
     background: none;
     color: var(--gold);
-    width: 72px;
-    height: 72px;
+    width: 68px;
+    height: 68px;
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -308,8 +308,8 @@ input[type="range"]:focus-visible::-moz-range-thumb {
 }
 
 .play-btn svg {
-    width: 58px;
-    height: 58px;
+    width: 52px;
+    height: 52px;
     fill: currentColor;
 }
 
@@ -337,21 +337,22 @@ input[type="range"]:focus-visible::-moz-range-thumb {
     display: none;
     width: 44px;
     height: 40px;
-    margin-right: -6px;
     border-radius: 12px;
 }
 
 .lyrics-toggle svg {
+    width: 26px;
+    height: 26px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.8;
+    stroke-width: 1.5;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
-.lyrics-toggle svg {
-    width: 24px;
-    height: 24px;
+.lyrics-toggle .dot {
+    fill: currentColor;
+    stroke: none;
 }
 
 .lyrics-toggle[aria-pressed="true"] {
@@ -370,6 +371,35 @@ input[type="range"]:focus-visible::-moz-range-thumb {
     width: 36px;
     height: 36px;
     margin-left: -8px;
+}
+
+.mute-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Loud-side volume icon: speaker plus waves that light up with the volume level. */
+.vol-max {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin-left: 2px;
+    fill: currentColor;
+    color: var(--text);
+    opacity: 0.6;
+}
+
+.vol-max .wave {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.vol-max .wave.on {
+    opacity: 1;
 }
 
 .volume-track {
@@ -611,36 +641,42 @@ input[type="range"]:focus-visible::-moz-range-thumb {
     }
 
     .transport-row .ctrl-btn {
-        width: 68px;
-        height: 68px;
+        width: 64px;
+        height: 64px;
     }
 
     .transport-row .ctrl-btn svg {
-        width: 60px;
-        height: 60px;
+        width: 52px;
+        height: 52px;
     }
 
     .play-btn {
-        width: 84px;
-        height: 84px;
+        width: 80px;
+        height: 80px;
     }
 
     .play-btn svg {
-        width: 70px;
-        height: 70px;
+        width: 62px;
+        height: 62px;
     }
 
     .mute-btn {
         width: 44px;
         height: 44px;
-        margin-left: -13px;
+        margin-left: -11px;
     }
 
+    .vol-max {
+        margin-right: -1px;
+    }
+
+    /* Own row, centred directly under the volume control. */
     .lyrics-toggle {
         display: flex;
-        width: 44px;
+        align-self: center;
+        width: 48px;
         height: 44px;
-        margin-right: -8px;
+        margin-top: -12px;
         border-radius: 11px;
     }
 
@@ -784,8 +820,8 @@ input[type="range"]:focus-visible::-moz-range-thumb {
     }
 
     .transport-row .ctrl-btn svg {
-        width: 42px;
-        height: 42px;
+        width: 38px;
+        height: 38px;
     }
 
     .play-btn {
@@ -794,8 +830,8 @@ input[type="range"]:focus-visible::-moz-range-thumb {
     }
 
     .play-btn svg {
-        width: 50px;
-        height: 50px;
+        width: 46px;
+        height: 46px;
     }
 
     .lyric-line {
