@@ -1,10 +1,19 @@
 :root {
+    /* Surfaces */
+    --surface-fallback: #14060a;
+    --glass-fill: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.12);
-    --gold: #ffcc00;
-    --gold-glow: rgba(255, 204, 0, 0.35);
-    --gold-soft: rgba(255, 204, 0, 0.15);
+
+    /* Accent: gold means "now, active or selected". Tuned toward the cover's amber. */
+    --gold: #f5b82e;
+    --gold-glow: rgba(245, 184, 46, 0.24);
+    --gold-soft: rgba(245, 184, 46, 0.16);
+
+    /* Neutrals */
     --text: #ffffff;
-    --text-dim: rgba(255, 255, 255, 0.55);
+    --text-dim: rgba(255, 255, 255, 0.6);
+    --text-faint: rgba(255, 255, 255, 0.4);
+    --track-bg: rgba(255, 255, 255, 0.22);
     --ctrl-hover: rgba(255, 255, 255, 0.08);
 
     --pad-x: clamp(20px, 4vw, 64px);
@@ -22,7 +31,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: url('background.jpg') no-repeat center center fixed;
+    background: var(--surface-fallback) url('background.jpg') no-repeat center center fixed;
     background-size: cover;
     color: var(--text);
     height: 100vh;
@@ -57,7 +66,7 @@ body {
 
 .media-hub,
 .controls-container {
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--glass-fill);
     backdrop-filter: blur(25px) brightness(1.1);
     -webkit-backdrop-filter: blur(25px) brightness(1.1);
     border-radius: 28px;
@@ -84,7 +93,7 @@ body {
     border-radius: 16px;
     object-fit: cover;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-    background-color: #222;
+    background-color: var(--surface-fallback);
 }
 
 /* Soft halo behind the artwork; only used in the mobile Now Playing layout. */
@@ -96,7 +105,7 @@ body {
     font-size: 1.65rem;
     font-weight: 700;
     margin-bottom: 4px;
-    color: var(--gold);
+    color: var(--text);
     letter-spacing: 0.01em;
 }
 
@@ -132,7 +141,7 @@ input[type="range"] {
     outline: none;
     --fill: 0%;
     --fill-color: var(--gold);
-    --track-bg: rgba(255, 255, 255, 0.16);
+    --track-bg-color: var(--track-bg);
     --track-h: 4px;
     --thumb: 12px;
 }
@@ -140,7 +149,7 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-runnable-track {
     height: var(--track-h);
     border-radius: 999px;
-    background: linear-gradient(to right, var(--fill-color) var(--fill), var(--track-bg) var(--fill));
+    background: linear-gradient(to right, var(--fill-color) var(--fill), var(--track-bg-color) var(--fill));
     transition: background-color 0.25s ease;
 }
 
@@ -161,7 +170,7 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]::-moz-range-track {
     height: var(--track-h);
     border-radius: 999px;
-    background: var(--track-bg);
+    background: var(--track-bg-color);
 }
 
 input[type="range"]::-moz-range-progress {
@@ -326,12 +335,6 @@ input[type="range"]:focus-visible::-moz-range-thumb {
     box-shadow: 0 0 0 2px var(--gold-soft), 0 0 0 3px var(--gold);
 }
 
-@media (hover: hover) {
-    .transport-row .ctrl-btn:hover {
-        color: var(--gold);
-    }
-}
-
 /* Lyrics toggle: only shown in the mobile/tablet layout. */
 .lyrics-toggle {
     display: none;
@@ -411,10 +414,12 @@ input[type="range"]:focus-visible::-moz-range-thumb {
     --fill-color: rgba(255, 255, 255, 0.7);
 }
 
-.volume-track input[type="range"]:hover,
-.volume-track input[type="range"]:focus-visible,
-.volume-track input[type="range"]:active {
-    --fill-color: var(--gold);
+.volume-track input[type="range"]::-webkit-slider-thumb {
+    background: var(--text);
+}
+
+.volume-track input[type="range"]::-moz-range-thumb {
+    background: var(--text);
 }
 
 .lyrics-container {
@@ -456,7 +461,7 @@ input[type="range"]:focus-visible::-moz-range-thumb {
     filter: blur(0);
     color: var(--gold);
     transform: scale(1.05) translateX(15px);
-    text-shadow: 0 0 30px rgba(255, 204, 0, 0.6);
+    text-shadow: 0 0 24px var(--gold-glow);
 }
 
 /* ------------------------------------------------------------------
@@ -575,8 +580,8 @@ input[type="range"]:focus-visible::-moz-range-thumb {
         width: 120%;
         height: 80%;
         object-fit: cover;
-        filter: blur(42px) saturate(1.25);
-        opacity: 0.5;
+        filter: blur(42px) saturate(1.05);
+        opacity: 0.4;
         -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
         mask-image: linear-gradient(to bottom, #000 45%, transparent);
         z-index: -1;
