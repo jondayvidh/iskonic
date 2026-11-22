@@ -12,22 +12,22 @@
 </head>
 <body>
     <div class="content-wrapper">
-        <div class="main-container" id="player">
+        <main class="main-container" id="player">
             <div class="left-column">
                 <div class="media-hub">
                     <div class="cover-frame" id="coverFrame">
                         <img src="cover.jpg" alt="" aria-hidden="true" class="cover-glow">
                         <img src="cover.jpg" alt="PUP Logo" class="cover-art">
                     </div>
-                    <div class="song-info">
-                        <h2>Imno ng PUP</h2>
+                    <div class="song-info" lang="fil">
+                        <h1>Imno ng PUP</h1>
                         <p>S. Calabig, S. Roldan, and R. Amaranto</p>
                     </div>
                 </div>
 
                 <div class="controls-container">
                     <div class="progress-area">
-                        <input type="range" id="progressBar" value="0" max="100">
+                        <input type="range" id="progressBar" value="0" max="100" aria-label="Seek">
                         <div class="time-display">
                             <span id="currentTime">0:00</span>
                             <span id="duration">0:00</span>
@@ -39,8 +39,8 @@
                             <svg viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
                         </button>
 
-                        <button id="playBtn" class="play-btn">
-                            <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <button id="playBtn" class="play-btn" title="Play" aria-label="Play">
+                            <svg id="playIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
                         </button>
 
                         <button id="nextBtn" class="ctrl-btn" title="Next">
@@ -49,11 +49,11 @@
                     </div>
 
                     <div class="volume-row">
-                        <button id="muteBtn" class="ctrl-btn mute-btn" title="Mute">
+                        <button id="muteBtn" class="ctrl-btn mute-btn" title="Mute" aria-label="Mute">
                             <svg id="muteIcon" viewBox="0 0 24 24"><path d="M4 9.5h2.8l4.2-3.5a.6.6 0 0 1 1 .46v11.08a.6.6 0 0 1-1 .46L6.8 14.5H4a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z"/></svg>
                         </button>
                         <div class="volume-track">
-                            <input type="range" id="volumeSlider" value="1" min="0" max="1" step="0.05">
+                            <input type="range" id="volumeSlider" value="1" min="0" max="1" step="0.05" aria-label="Volume" aria-valuetext="100%">
                         </div>
                         <svg id="volumeMaxIcon" class="vol-max" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M4 9.5h2.8l4.2-3.5a.6.6 0 0 1 1 .46v11.08a.6.6 0 0 1-1 .46L6.8 14.5H4a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z"/>
@@ -62,17 +62,18 @@
                             <path class="wave" d="M20.5 5.6a10 10 0 0 1 0 12.8"/>
                         </svg>
                     </div>
-                    <button id="lyricsToggle" class="ctrl-btn lyrics-toggle" title="Lyrics" aria-label="Show lyrics" aria-pressed="false">
+                    <button id="lyricsToggle" class="ctrl-btn lyrics-toggle" title="Lyrics" aria-label="Lyrics" aria-pressed="false">
                         <svg viewBox="0 0 24 24"><path d="M6 4h12a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-7l-3.4 3c-.5.4-1.1.1-1.1-.5V17H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3z"/><circle class="dot" cx="9.4" cy="9.6" r="1.3"/><circle class="dot" cx="14.6" cy="9.6" r="1.3"/><path d="M9.4 10.8c0 .9-.4 1.5-1.1 1.9M14.6 10.8c0 .9-.4 1.5-1.1 1.9"/></svg>
                     </button>
                 </div>
             </div>
 
-            <div class="lyrics-container" id="lyricsContainer"></div>
-        </div>
+            <div class="lyrics-container" id="lyricsContainer" role="group" aria-label="Lyrics"></div>
+        </main>
     </div>
 
-    <audio id="audio" src="pup-hymn.mp3"></audio>
+    <div id="status" class="visually-hidden" role="status"></div>
+    <audio id="audio" src="pup-hymn.mp3" preload="metadata"></audio>
     <script src="script.js"></script>
 </body>
 </html>
